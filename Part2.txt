@@ -1,0 +1,90 @@
+Demultiplex Assignment the first
+Anna Grace Welch
+
+Part 2: 
+======================================================================================================================================================
+
+Define the problem: 
+
+For this experiment, I need to develop an algorithm to parse through four files from a sequencing lane.
+Two of these files should be read files and the other two should be index files relating to the reads. 
+This script should be able to multiplex the data in these four files.
+That means for all records that have matching index pairs, the script should write to the appropriate FASTQ file
+delineated by that index pair. There should be a read 1 FASTQ file and a read2 FASTQ file for each matching index pair, meaning 48 overall.
+The records where either one or both of the indexes are not in our known indexes, the script should write the read to the unknown
+FASTQ file. There should be two of these, one with the records from read 1 and one with the records from read 2.
+The records where the indexes are known but do not match should be written to the index hopping FASTQ file. 
+There should be two of these, one with the records from read 1 and one with the records from read 2.
+The script should also output the count of the records that had matching index pairs and the records that had unknown 
+indexes. Additionally, it should output the count of each mis-matched index pair (index-hopped) seen in the file. 
+
+
+Outputs: 
+48 dual-matched FASTQ files (or however many known indexes we have multiplied by 2)
+2 unknown FASTQ files
+2 index-hopping FASTQ files
+Number of read-pairs with indexes that match
+Number of read-pairs where one or both of the indexes are unknown
+Number of mis-matched index pairs (and how many times each specific mismatch is seen)
+
+Pseudocode: 
+======================================================================================================================================================
+def reverse_complement(sequence: str) -> str:
+    '''Takes a string (sequence) as input. Reverses the string and converts each base to its respective complement.
+    Returns this reverse complement string'''
+    reverse_string = reverse index string
+    for loop:
+        if base is A, reverse_complement at that index is T
+        if base is T, reverse_complement at that index is A
+        if base is C, reverse_complement at that index is G
+        if base is G, reverse_complement at that index is C
+    return reverse_complement
+Input: ACTAGGCC
+Expected Output: GGCCTAGT
+
+initialize variables for counters for matching indexes, index hopping, and unknown indexes
+initialize dictionary for index-hopping count
+
+Open all four files (read1, read2, index1, and index2)
+While true: 
+
+Read first line of all four files
+    save header1 into a variable (read1 header)
+    save header2 into a variable (read2 header)
+    
+Read second line of all four files
+    save seq1 into a variable (read 1)
+    save seq2 into a variable (read 2)
+    save index1 into a variable
+    save index2 into a variable
+    call function to create reverse complement of index2 and save it in variable rc_index2
+
+    save header1 + index1 + rc_index2 + new line + seq1 to new variable called output1
+    save header2 + index1 + rc_index2 + new line + seq2 to new variable called output2
+
+    if index 1 has an N OR index2 has an N: 
+        increment counter for read pairs with unknown index(es)
+        write output1 to unknown FASTQ file 1 
+        write output2 to unknown FASTQ file 2 
+
+    if index1 not in known indexes OR rc_index2 not in known indexes: 
+        increment counter for read pairs with unknown index(es)
+        write output1 to unknown FASTQ file 1 
+        write output2 to unknown FASTQ file 2 
+    
+    elif index1 and rc_index2 are the same: 
+        increment counter for read pairs with matching indexes
+        write output1 to dual matched FASTQ file 1 for this index pair
+        write output2 to dual matched FASTQ file 2 for this index pair
+
+    else:
+        increment counter for read pairs with index-hopping
+        save tuple with index pair as key to dictionary
+            if already in dictionary, increment counter for that tuple
+                else set counter to 1
+        write output1 to index-hopping FASTQ file 1
+        write output2 to index-hopping FASTQ file 2
+
+Print to terminal the counters
+
+
