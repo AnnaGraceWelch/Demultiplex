@@ -99,6 +99,6 @@ Read fourth line of all four files (quality score line)
 
 Loop back up to start reading lines again
 
-Print to terminal the counters when at end of files
+Print to separate text file the counters when at end of files
 
 
