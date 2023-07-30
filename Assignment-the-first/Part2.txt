@@ -48,19 +48,31 @@ initialize dictionary for index-hopping count
 Open all four files (read1, read2, index1, and index2)
 While true: 
 
-Read first line of all four files
+Make sure we're not at the end of the files
+
+If we're not:
+
+Read first line of all four files (header line)
     save header1 into a variable (read1 header)
     save header2 into a variable (read2 header)
     
-Read second line of all four files
+Read second line of all four files (sequence line)
     save seq1 into a variable (read 1)
     save seq2 into a variable (read 2)
     save index1 into a variable
     save index2 into a variable
     call function to create reverse complement of index2 and save it in variable rc_index2
 
-    save header1 + index1 + rc_index2 + new line + seq1 to new variable called output1
-    save header2 + index1 + rc_index2 + new line + seq2 to new variable called output2
+Read third line of all four files (+)
+    save +_line1 into a variable
+    save +_line2 into a variable
+
+Read fourth line of all four files (quality score line)
+    save q_score1 into a variable
+    save q_score2 into a variable
+
+    save header1 + index1 + rc_index2 + new line + seq1 + new line + +_line1 + new line + q_score1 to new variable called output1
+    save header2 + index1 + rc_index2 + new line + seq2 + new line + +_line2 + new line + q_score2 to new variable called output2
 
     if index 1 has an N OR index2 has an N: 
         increment counter for read pairs with unknown index(es)
@@ -85,6 +97,8 @@ Read second line of all four files
         write output1 to index-hopping FASTQ file 1
         write output2 to index-hopping FASTQ file 2
 
-Print to terminal the counters
+Loop back up to start reading lines again
+
+Print to terminal the counters when at end of files
 
 
