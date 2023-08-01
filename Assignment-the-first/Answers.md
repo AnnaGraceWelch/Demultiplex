@@ -28,7 +28,7 @@
 
 What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
 
-A good quality score cutoff for biological read pairs is 30. At Q30, there is a 1 in 1000 chance that a base call is incorrect, meaning it has a 99.9% accuracy rate. At this point, there should be very, very few or even zero errors in the sequence. This means that data with this high of a quality score would probably not lead to inaccurate conclusions when doing analyses. While you could set your cutoff to 40 to ensure even higher accuracy, it is likely this would very severely limit the breadth of your data to analyze. 
+A good quality score cutoff for biological read pairs and index reads is 30. At Q30, there is a 1 in 1000 chance that a base call is incorrect, meaning it has a 99.9% accuracy rate. At this point, there should be very, very few or even zero errors in the sequence. This means that data with this high of a quality score would probably not lead to inaccurate conclusions when doing analyses. While you could set your cutoff to 40 to ensure even higher accuracy, it is likely this would very severely limit the breadth of your data to analyze. 
 
 How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
 
