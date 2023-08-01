@@ -1,0 +1,237 @@
+Demultiplex Assignment the First
+Anna Grace Welch
+
+-------------
+July 27, 2023
+-------------
+
+Part 1
+=============================================================================================================================================
+1. I used the following bash commands to determine which files contained the biological reads and which contained the indexes:
+
+Looked at beginning of first file: 
+    $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz | head
+
+First record output:
+    @K00337:83:HJKJNBBXX:8:1101:1265:1191 1:N:0:1
+    GNCTGGCATTCCCAGAGACATCAGTACCCAGTTGGTTCAGACAGTTCCTCTATTGGTTGACAAGGTCTTCATTTCTAGTGATATCAACACGGTGTCTACAA
+    +
+    A#A-<FJJJ<JJJJJJJJJJJJJJJJJFJJJJFFJJFJJJAJJJJ-AJJJJJJJFFJJJJJJFFA-7<AJJJFFAJJJJJF<F--JJJJJJF-A-F7JJJJ
+
+So R1 contains the first reads from sequencing as the sequence line is longer than a barcode. 
+
+Looked at beginning of second file: 
+    $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz | head
+
+First record output:
+    @K00337:83:HJKJNBBXX:8:1101:1265:1191 2:N:0:1
+    NCTTCGAC
+    +
+    #AA<FJJJ
+
+So R2 contains index1 from sequencing as the sequence line is only eight bases. 
+
+Looked at beginning of third file: 
+    $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz | head
+
+First record output: 
+    @K00337:83:HJKJNBBXX:8:1101:1265:1191 3:N:0:1
+    NTCGAAGA
+    +
+    #AAAAJJF
+
+So R3 contains index2 from sequencing as the sequence line is only eight bases.
+
+Looked at beginning of fourth file:
+    $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz | head
+
+First record output: 
+    @K00337:83:HJKJNBBXX:8:1101:1265:1191 4:N:0:1
+    NTTTTGATTTACCTTTCAGCCAATGAGAAGGCCGTTCATGCAGACTTTTTTAATGATTTTGAAGACCTTTTTGATGATGATGATGTCCAGTGAGGCCTCCC
+    +
+    #AAFAFJJ-----F---7-<FA-F<AFFA-JJJ77<FJFJFJJJJJJJJJJAFJFFAJJJJJJJJFJF7-AFFJJ7F7JFJJFJ7FFF--A<A7<-A-7--
+
+So R4 contains read 2 from sequencing as the sequence line is much longer than a barcode would be.
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+2. I used the following bash command to determine the length of the reads in each file.
+
+Bash Command to determine length of reads in files: 
+    $ zcat /projects/bgmp/shared/2017_sequencing/<file_name>| sed -n '2~4p'| head -1 | awk '{print length}'
+
+
+First Read (1294_S1_L008_R1_001.fastq.gz) Output: 
+    101
+Second Read (1294_S1_L008_R2_001.fastq.gz) Output: 
+    8
+Third Read (1294_S1_L008_R3_001.fastq.gz) Output: 
+    8
+Fourth Read (1294_S1_L008_R4_001.fastq.gz) Output: 
+    101
+
+
+3. Bash command to determine Phred encoding of files: 
+
+$ zcat /projects/bgmp/shared/2017_sequencing/<file_name> | sed -n '4~4p'| head -1
+
+First Read (1294_S1_L008_R1_001.fastq.gz) output:
+    A#A-<FJJJ<JJJJJJJJJJJJJJJJJFJJJJFFJJFJJJAJJJJ-AJJJJJJJFFJJJJJJFFA-7<AJJJFFAJJJJJF<F--JJJJJJF-A-F7JJJJ
+
+Second Read (1294_S1_L008_R2_001.fastq.gz) Output:
+    #AA<FJJJ
+
+Third Read (1294_S1_L008_R3_001.fastq.gz) Output:
+    #AAAAJJF
+
+Fourth Read (1294_S1_L008_R4_001.fastq.gz) Output:
+    #AAFAFJJ-----F---7-<FA-F<AFFA-JJJ77<FJFJFJJJJJJJJJJAFJFFAJJJJJJJJFJF7-AFFJJ7F7JFJJFJ7FFF--A<A7<-A-7--
+
+Since # is only seen in Phred+33 encoding, that is the encoding our files must be using!
+
+Table organizing this information:
+
+| File name | label | Read length | Phred encoding |
+|---|---|---|---|
+| 1294_S1_L008_R1_001.fastq.gz | read 1 | 101 | +33 |
+| 1294_S1_L008_R2_001.fastq.gz | index 1 | 8 | +33 |
+| 1294_S1_L008_R3_001.fastq.gz | index 2 | 8 | +33 |
+| 1294_S1_L008_R4_001.fastq.gz | read 2 | 101 | +33 |
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+I then created unit test files with 4 reads each. The first reads should have matching index pairs. The second reads have Ns and should therefore go to the unknown files. The third reads should go to index-hopping files. The last reads should go to unknown as the indexes are not in the known list. These test files are in the directory: /projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/TEST-input_FASTQ/.
+
+--------------
+July 31, 2023
+--------------
+
+I gzipped test file 1 (test.R1.fastq.gz) and then ran the script part1.py on it to test how my program generated a histogram for a proposed read file. 
+
+This produced the tab-separated file containing the distribution:
+    test_R1.distribution.tsv
+And the histogram plot of the distribution: 
+    test_R1.distribution.png
+
+All seemed to work as intended! 
+
+I also gzipped test file 2 (test.R2.fastq.gz) and ran the script part1.py on it to test how my program worked for a supposed index read file.
+
+This produced the tab-separated file in the Demultiplex repo: 
+    test_R2.distribution.tsv
+And the histogram plot of the distribution: 
+    test_R2.distribution.png
+
+Originally, this outputted a histogram with the correct information. However, since the read length of the index files are much shorter, the data was all on one side of the plot. 
+
+To fix this, I added another argparse argument to my code to enter the read length of the reads in the input file. I wrote over the original output files with this change.
+
+This made the graph much prettier! 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+I created sbatch scripts to run part1.py on the input read files that are found in the directory /projects/bgmp/shared/2017_sequencing/ on Talapas. 
+The names of the script, SLURM log file, and output files (tsv and histogram) along with appropriate information from /usr/bin/time is listed below for each respective run.
+The output files, part1.py python script, sbatch scripts, and SLURM log files are all in the part1/ directory in the Demultiplex repo.
+The module bioinfo.py that contains my convert_phred function used in the python script is also in this directory.
+
+R1 (1294_S1_L008_R1_001.fastq.gz) distribution:
+    Sbatch script: 
+        R1_distribution.sh
+    SLURM log file:
+        slurm-23871.out
+    Output files: 
+        read_1.distribution.tsv
+        read_1.distribution.png
+
+    /usr/bin/time -v
+        Command being timed: "/projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/Assignment-the-first/part1/part1.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -o read_1.distribution -l 101"
+        User time (seconds): 5557.50
+        System time (seconds): 8.41
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:33:10
+        Maximum resident set size (kbytes): 68432
+        Exit status: 0
+    
+R2 (1294_S1_L008_R2_001.fastq.gz) distribution:
+    Sbatch script: 
+        R2_distribution.sh
+    SLURM log file:
+        slurm-23872.out
+    Output files: 
+        read_2.distribution.tsv
+        read_2.distribution.png
+
+    /usr/bin/time -v
+        Command being timed: "/projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/Assignment-the-first/part1/part1.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -o read_2.distribution -l 8"
+        User time (seconds): 766.99
+        System time (seconds): 1.59
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 12:52.15
+        Maximum resident set size (kbytes): 70276
+        Exit status: 0
+
+R3 (1294_S1_L008_R3_001.fastq.gz) distribution:
+    Sbatch script: 
+        R3_distribution.sh
+    SLURM log file:
+        slurm-23873.out
+    Output files: 
+        read_3.distribution.tsv
+        read_3.distribution.png
+
+    /usr/bin/time -v
+        Command being timed: "/projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/Assignment-the-first/part1/part1.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -o read_3.distribution -l 8"
+        User time (seconds): 744.87
+        System time (seconds): 2.61
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 12:33.78
+        Maximum resident set size (kbytes): 71116
+        Exit status: 0
+
+R4 (1294_S1_L008_R4_001.fastq.gz) distribution:
+    Sbatch script: 
+        R4_distribution.sh
+    SLURM log file:
+        slurm-23874.out
+    Output files: 
+        read_4.distribution.tsv
+        read_4.distribution.png
+    
+    /usr/bin/time -v 
+        Command being timed: "/projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/Assignment-the-first/part1/part1.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -o read_4.distribution -l 101"
+        User time (seconds): 5169.32
+        System time (seconds): 10.01
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:26:39
+        Maximum resident set size (kbytes): 69252
+        Exit status: 0
+
+
+What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
+
+A good quality score cutoff for biological read pairs is 30. At Q30, there is a 1 in 1000 chance that a base call is incorrect, meaning it has a 99.9% accuracy rate. 
+At this point, there should be very, very few or even zero errors in the sequence. This means that data with this high of a quality score would probably not lead to inaccurate conclusions when doing analyses. While you could set your cutoff to 40 to ensure even higher accuracy, it is likely this would very severely limit the breadth of your data to analyze. 
+
+How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
+
+Bash commands: 
+    Index 1 file: 
+        zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz | sed -n '2~4p' | grep "N" | wc -l 
+    Output: 
+        3976613
+    Index 2 file: 
+        zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz | sed -n '2~4p' | grep "N" | wc -l 
+    Output: 
+        3328051
+
+3976613 + 3328051 = 7304664 
+
+7304664 indexes have undetermined based calls. 
+
+
+
+
+
+
