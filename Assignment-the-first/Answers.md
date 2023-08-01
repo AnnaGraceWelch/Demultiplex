@@ -32,6 +32,20 @@ A good quality score cutoff for biological read pairs is 30. At Q30, there is a 
 
 How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
 
+Bash commands: 
+    Index 1 file: 
+        zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz | sed -n '2~4p' | grep "N" | wc -l 
+    Output: 
+        3976613
+    Index 2 file: 
+        zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz | sed -n '2~4p' | grep "N" | wc -l 
+    Output: 
+        3328051
+
+3976613 + 3328051 = 7304664 
+
+7304664 indexes have undetermined based calls. 
+
 
     
 ## Part 2
