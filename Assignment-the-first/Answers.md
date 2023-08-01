@@ -39,9 +39,7 @@ Index 1 file:
 
     
     ```
-    
     $ zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz | sed -n                 '2~4p' | grep "N" | wc -l 
-        
     ```
 Output: 
     3976613
