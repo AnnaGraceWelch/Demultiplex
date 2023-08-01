@@ -12,17 +12,18 @@
 
 2. Per-base NT distribution
     1. Use markdown to insert your 4 histograms here.
-    1294_S1_L008_R1_001.fastq.gz:
-        ![Read 1 Distribution](part1/read_1.distribution.png)
-
-    1294_S1_L008_R2_001.fastq.gz:
-        ![Read 2 Distribution](part1/read_2.distribution.png)
-
-    1294_S1_L008_R3_001.fastq.gz
-        ![Read 3 Distribution](part1/read_3.distribution.png)
     
-    1294_S1_L008_R4_001.fastq.gz
-        ![Read 4 Distribution](part1/read_4.distribution.png)
+        Read 1 (Biological Read 1) Distribution:
+            ![Read 1 Distribution](part1/read_1.distribution.png)
+    
+        Read 2 (Index 1) Distribution:
+            ![Read 2 Distribution](part1/read_2.distribution.png)
+    
+        Read 3 (Index 2) Distribution:
+            ![Read 3 Distribution](part1/read_3.distribution.png)
+        
+        Read 4 (Biological Read 2) Distribution: 
+            ![Read 4 Distribution](part1/read_4.distribution.png)
 
 
 What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
