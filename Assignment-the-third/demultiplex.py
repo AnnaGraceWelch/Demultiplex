@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import bioinfo
+
 import argparse
 import gzip
 
