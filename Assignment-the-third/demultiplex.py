@@ -202,8 +202,10 @@ for key in files:
 
 #initialize variable for percent of reads for each sample
 percent = 0
-#open tsv file to hold end report
-with open("test_report.md", 'w') as output: 
+
+
+#open markdown file to hold end report
+with open("report.md", 'w') as output: 
     #write percent of reads for each sample and amount of times each match pair occurred
     output.write("| Match | Count | Percentage of Reads in Total Matches |\n")
     output.write("|---|---|---|\n")
