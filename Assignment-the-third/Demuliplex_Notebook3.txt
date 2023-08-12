@@ -21,6 +21,10 @@ $ ./demultiplex.py -r1 ../TEST-input_FASTQ/test.R1.fastq.gz -r2 ../TEST-input_FA
 
 Everything seemed to work as expected! 
 
+--------------
+August 9, 2023
+--------------
+
 I created a slurm script called demultiplex.sh to run this program on the four input files found in /projects/bgmp/shared/2017_sequencing/:
 1294_S1_L008_R1_001.fastq.gz
 1294_S1_L008_R2_001.fastq.gz
@@ -41,6 +45,10 @@ slurm-26339.out
 	Exit status: 0
 
 This seemed to give the expected results! 
+
+---------------
+August 11, 2023
+---------------
 
 However, I then decided I wanted my script to output a markdown file of the results. 
 I wanted a markdown table of all the counts, so I adjusted my script accordingly. 
