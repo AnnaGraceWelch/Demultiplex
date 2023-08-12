@@ -8,8 +8,8 @@ Percentage of Matches in Total Records: 25.0%
 |---|---|
 | AACAGCGA-CACTTCAC | 1 |
 
-Total amount of index hopping: 1
-Percentage of Index-Hopping in Total Records:  25.0% 
+Total amount of index hopping: 1  
+Percentage of Index-Hopping in Total Records:  25.0%  
 
-Amount of Unknown Index Pairs: 2
-Percentage of Unknown Index Pairs in Total Records: 50.0%
+Amount of Unknown Index Pairs: 2  
+Percentage of Unknown Index Pairs in Total Records: 50.0%  
