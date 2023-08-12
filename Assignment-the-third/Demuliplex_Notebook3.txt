@@ -1,6 +1,68 @@
-To run on test files: 
+Assignment-the-third
+Anna Grace Welch
+
+
+Part 3 
+=====================================================================
+
+---------------
+August 8, 2023
+---------------
+
+I created the python script demultiplex.py in order to demultiplex samples from a single lane sequencing read. 
+The reads with indexes not in our known list at /projects/bgmp/shared/2017_sequencing/indexes.txt are put into the unknown files.
+Reads with indexes with Ns are also put into the unknown files.
+Reads with observed index-hopping are put into index-hopping files. 
+Reads for each matched index-pair are put in the respective matched file delineated by the index-pair. 
+
+I ran this script on four test files that have one instance of each condition.
 
 $ ./demultiplex.py -r1 ../TEST-input_FASTQ/test.R1.fastq.gz -r2 ../TEST-input_FASTQ/test.R2.fastq.gz -r3 ../TEST-input_FASTQ/test.R3.fastq.gz -r4 ../TEST-input_FASTQ/test.R4.fastq.gz -i /projects/bgmp/shared/2017_sequencing/indexes.txt
 
+Everything seemed to work as expected! 
 
-slurm-26339.out
+I created a slurm script called demultiplex.sh to run this program on the four input files found in /projects/bgmp/shared/2017_sequencing/:
+1294_S1_L008_R1_001.fastq.gz
+1294_S1_L008_R2_001.fastq.gz
+1294_S1_L008_R3_001.fastq.gz
+1294_S1_L008_R4_001.fastq.gz
+
+The first time I ran this, it generated a tsv file called report.tsv of the result.
+Slurm log file: 
+slurm-26339.out 
+
+/usr/bin/time
+	Command being timed: "/projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/Assignment-the-third/demultiplex.py -r1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -r2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -r3 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -r4 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -i /projects/bgmp/shared/2017_sequencing/indexes.txt"
+	User time (seconds): 3331.92
+	System time (seconds): 48.65
+	Percent of CPU this job got: 68%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:22:12
+	Maximum resident set size (kbytes): 245780
+	Exit status: 0
+
+This seemed to give the expected results! 
+
+However, I then decided I wanted my script to output a markdown file of the results. 
+I wanted a markdown table of all the counts, so I adjusted my script accordingly. 
+
+I submitted a second batch job to run demuliplex.sh for a second time. 
+Slurm log file:
+slurm-28524.out
+
+/usr/bin/time
+	Command being timed: "/projects/bgmp/agwel/bioinfo/Bi622/Demultiplex/Assignment-the-third/demultiplex.py -r1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -r2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -r3 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -r4 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -i /projects/bgmp/shared/2017_sequencing/indexes.txt"
+	User time (seconds): 3361.66
+	System time (seconds): 97.51
+	Percent of CPU this job got: 84%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:07:57
+	Maximum resident set size (kbytes): 245540
+	Exit status: 0
+
+
+
+I did not implement a further quality filter in my code for two main reasons.
+The first reason is that we are already getting rid of all indexes with an N in them.
+This is a built-in quality cutoff to get rid of low quality reads. The second reason is because
+our indexes are so far apart that it would be very unlikely for one index to accidentally change into another.
+This means, in our case, implementing a quality cutoff is not really needed in order to ensure accuracy of our known
+indexes. 

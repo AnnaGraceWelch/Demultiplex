@@ -212,19 +212,24 @@ with open("test_report.md", 'w') as output:
         output.write(f'| {key} | {matches[key]} | {percent}%|\n')
     match_percent = 0
     match_percent = (total_matches / total_records) * 100
-    output.write(f"Percentage of Matches in Total Records: {match_percent}%\n")
+    output.write(f"\nPercentage of Matches in Total Records: {match_percent}%\n")
     
     #write amount of times each mismatch occurred and total amount of index hopping
     output.write("\n| Index-Hopped Pair | Count |\n")
     output.write("|---|---|\n")
     for key in hopped: 
         output.write(f'| {key} | {hopped[key]} |\n')
-    output.write(f'Total amount of index hopping: {total_hopped}\n')
+    output.write(f'\nTotal amount of index hopping: {total_hopped}  \n')
+    #calculate percent of hopped indexes and write total inedex hopping
     hopped_percent = 0
     hopped_percent = (total_hopped / total_records) * 100
-    output.write(f'Percentage of Index-Hopping in Total Records: {hopped_percent}%\n')
-    output.write(f'\nAmount of Unknown Index Pairs: {unknown}')
-
+    output.write(f'Percentage of Index-Hopping in Total Records:  {hopped_percent}%  \n')
+    
+    #calculate percent of unknown index pairs and write total counter and percent 
+    unknown_percent = 0
+    unknown_percent = (unknown / total_records) * 100
+    output.write(f'\nAmount of Unknown Index Pairs: {unknown}  \n')
+    output.write(f"Percentage of Unknown Index Pairs in Total Records: {unknown_percent}%  \n")
 
     
 
