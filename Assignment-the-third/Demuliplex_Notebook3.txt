@@ -1,1 +1,6 @@
+To run on test files: 
+
+$ ./demultiplex.py -r1 ../TEST-input_FASTQ/test.R1.fastq.gz -r2 ../TEST-input_FASTQ/test.R2.fastq.gz -r3 ../TEST-input_FASTQ/test.R3.fastq.gz -r4 ../TEST-input_FASTQ/test.R4.fastq.gz -i /projects/bgmp/shared/2017_sequencing/indexes.txt
+
+
 slurm-26339.out

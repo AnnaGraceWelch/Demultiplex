@@ -203,20 +203,22 @@ for key in files:
 #initialize variable for percent of reads for each sample
 percent = 0
 #open tsv file to hold end report
-with open("report.md", 'w') as output: 
+with open("test_report.md", 'w') as output: 
     #write percent of reads for each sample and amount of times each match pair occurred
-    output.write("Match\tCount\tPercentage of Reads in Total Matches\n")
+    output.write("| Match | Count | Percentage of Reads in Total Matches |\n")
+    output.write("|---|---|---|\n")
     for key in matches: 
         percent = (matches[key] / total_matches) * 100
-        output.write(f'{key}\t{matches[key]}\t{percent}%\n')
+        output.write(f'| {key} | {matches[key]} | {percent}%|\n')
     match_percent = 0
     match_percent = (total_matches / total_records) * 100
     output.write(f"Percentage of Matches in Total Records: {match_percent}%\n")
     
     #write amount of times each mismatch occurred and total amount of index hopping
-    output.write("\nIndex-Hopped Pair\tCount\n")
+    output.write("\n| Index-Hopped Pair | Count |\n")
+    output.write("|---|---|\n")
     for key in hopped: 
-        output.write(f'{key}\t{hopped[key]}\n')
+        output.write(f'| {key} | {hopped[key]} |\n')
     output.write(f'Total amount of index hopping: {total_hopped}\n')
     hopped_percent = 0
     hopped_percent = (total_hopped / total_records) * 100
